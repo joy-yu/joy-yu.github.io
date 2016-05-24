@@ -59,24 +59,55 @@
 	var imageDatas = __webpack_require__(169);
 	__webpack_require__(170);
 
+	//为imageData.json里的每张图片添加引用地址。
+	//imageDatas=[{fileName:'', title:'', desc:'', imageURL:''}, ..., ...]
 	imageDatas = function genImageURL(imgArr) {
-
 	    for (var i = 0, j = imgArr.length; i < j; i++) {
-	        var singleImageData = imgArr[i];
-	        singleImageData.imageURL = __webpack_require__(175)("./" + singleImageData.fileName);
-	        imgArr[i] = singleImageData;
+	        imgArr[i].imageURL = __webpack_require__(175)("./" + imgArr[i].fileName);
 	    }
 	    return imgArr;
 	}(imageDatas);
 
+	//获得(low,high]区间随机整数。
 	function getRangeRandom(low, high) {
 	    return Math.ceil(Math.random() * (high - low) + low);
 	}
 
+	//获得-30到30间的随机数。
 	function get30DegRandom() {
 	    return (Math.random() > 0.5 ? '' : '-') + Math.ceil(Math.random() * 30);
 	}
 
+	//底部控制组件
+	var ControllerUnit = React.createClass({
+	    displayName: 'ControllerUnit',
+
+
+	    handleClick: function handleClick(e) {
+	        e.stopPropagation();
+	        e.preventDefault();
+	        if (this.props.arrange.isCenter) {
+	            this.props.inverse();
+	        } else {
+	            this.props.center();
+	        }
+	    },
+	    render: function render() {
+
+	        var controllerUnit = 'controller-unit';
+
+	        if (this.props.arrange.isCenter) {
+	            controllerUnit += ' is-center';
+	            if (this.props.arrange.isInverse) {
+	                controllerUnit += ' is-inverse';
+	            }
+	        }
+
+	        return React.createElement('span', { className: controllerUnit, onClick: this.handleClick });
+	    }
+	});
+
+	//单幅画组件
 	var ImgFigure = React.createClass({
 	    displayName: 'ImgFigure',
 
@@ -137,34 +168,7 @@
 	    }
 	});
 
-	var ControllerUnit = React.createClass({
-	    displayName: 'ControllerUnit',
-
-
-	    handleClick: function handleClick(e) {
-	        e.stopPropagation();
-	        e.preventDefault();
-	        if (this.props.arrange.isCenter) {
-	            this.props.inverse();
-	        } else {
-	            this.props.center();
-	        }
-	    },
-	    render: function render() {
-
-	        var controllerUnit = 'controller-unit';
-
-	        if (this.props.arrange.isCenter) {
-	            controllerUnit += ' is-center';
-	            if (this.props.arrange.isInverse) {
-	                controllerUnit += ' is-inverse';
-	            }
-	        }
-
-	        return React.createElement('span', { className: controllerUnit, onClick: this.handleClick });
-	    }
-	});
-
+	//控制组件
 	var Gallery = React.createClass({
 	    displayName: 'Gallery',
 
@@ -175,29 +179,13 @@
 	        };
 	    },
 
-	    Constant: {
-	        centerPos: {
-	            left: 0,
-	            right: 0
-	        },
-	        hPosRange: {
-	            leftSecX: [0, 0],
-	            rightSecX: [0, 0],
-	            y: [0, 0]
-	        },
-	        vPosRange: {
-	            x: [0, 0],
-	            topY: [0, 0]
-	        }
-	    },
-
 	    inverse: function inverse(index) {
 	        return function () {
 	            var imgsArrangeArr = this.state.imgsArrangeArr;
 	            imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse;
 
 	            this.setState({
-	                imgsArrangeArr: imgsArrangeArr
+	                imgsArrangeArr: imgsArrangeArr //[{pos: {left: 0,top: 0},rotate: 0,isInverse: false,isCenter: false}, ..., ...]
 	            });
 	        }.bind(this);
 	    },
@@ -208,60 +196,86 @@
 	        }.bind(this);
 	    },
 
+	    Constant: {
+	        centerPos: {
+	            left: 0,
+	            right: 0
+	        },
+	        xRange: {
+	            leftX: [0, 0],
+	            rightX: [0, 0],
+	            y: [0, 0]
+	        },
+	        yRange: {
+	            x: [0, 0],
+	            topY: [0, 0]
+	        }
+	    },
+
+	    //重新布局所有图片
 	    rearrange: function rearrange(centerIndex) {
+
 	        var imgsArrangeArr = this.state.imgsArrangeArr,
 	            Constant = this.Constant,
 	            centerPos = Constant.centerPos,
-	            hPosRange = Constant.hPosRange,
-	            vPosRange = Constant.vPosRange,
-	            hPosRangeLeftSecX = hPosRange.leftSecX,
-	            hPosRangeRightSecX = hPosRange.rightSecX,
-	            hPosRangeY = hPosRange.y,
-	            vPosRangeTopY = vPosRange.topY,
-	            vPosRangeX = vPosRange.x,
+	            xRangeLeftX = Constant.xRange.leftX,
+	            xRangeRightX = Constant.xRange.rightX,
+	            xRangeY = Constant.xRange.y,
+	            yRangeTopY = Constant.yRange.topY,
+	            yRangeX = Constant.yRange.x,
 	            imgsArrangeTopArr = [],
-	            topImgNum = Math.floor(Math.random() * 2),
-	            topImgSpliceIndex = 0,
-	            imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex, 1);
 
+	        //顶部图片0个或1个
+	        topImgNum = Math.floor(Math.random() * 2),
+
+	        //顶部图片来自数组哪个位置，初始化
+	        topImgSpliceIndex = 0,
+
+	        //得到居中图片
+	        imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex, 1);
+
+	        //中心图片布局
 	        imgsArrangeCenterArr[0] = {
 	            pos: centerPos,
 	            rotate: 0,
 	            isCenter: true
 	        };
 
+	        //得到顶部图片数组位置。
 	        topImgSpliceIndex = Math.ceil(Math.random() * (imgsArrangeArr.length - topImgNum));
-
+	        //得到顶部图片
 	        imgsArrangeTopArr = imgsArrangeArr.splice(topImgSpliceIndex, topImgNum);
-
+	        //顶部图片布局
 	        imgsArrangeTopArr.forEach(function (value, index) {
 	            imgsArrangeTopArr[index] = {
 	                pos: {
-	                    top: getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1]),
-	                    left: getRangeRandom(vPosRangeX[0], vPosRangeX[1])
+	                    top: getRangeRandom(yRangeTopY[0], yRangeTopY[1]),
+	                    left: getRangeRandom(yRangeX[0], yRangeX[1])
 	                },
 	                rotate: get30DegRandom(),
 	                isCenter: false
 	            };
 	        });
 
+	        //左右图片布局
 	        for (var i = 0, j = imgsArrangeArr.length, k = j / 2; i < j; i++) {
-	            var hPosRangeLORX = null;
+	            var xRangeLORX = null;
+	            //前部分布局左边，后部分布局右边
 	            if (i < k) {
-	                hPosRangeLORX = hPosRangeLeftSecX;
+	                xRangeLORX = xRangeLeftX;
 	            } else {
-	                hPosRangeLORX = hPosRangeRightSecX;
+	                xRangeLORX = xRangeRightX;
 	            }
 	            imgsArrangeArr[i] = {
 	                pos: {
-	                    top: getRangeRandom(hPosRangeY[0], hPosRangeY[1]),
-	                    left: getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1])
+	                    top: getRangeRandom(xRangeY[0], xRangeY[1]),
+	                    left: getRangeRandom(xRangeLORX[0], xRangeLORX[1])
 	                },
 	                rotate: get30DegRandom(),
 	                isCenter: false
 	            };
 	        }
-
+	        //补充去除的中心，顶部图片信息
 	        if (imgsArrangeTopArr && imgsArrangeTopArr[0]) {
 	            imgsArrangeArr.splice(topImgSpliceIndex, 0, imgsArrangeTopArr[0]);
 	        }
@@ -271,6 +285,7 @@
 	        });
 	    },
 
+	    //组件加载后为每张图片计算位置范围。
 	    componentDidMount: function componentDidMount() {
 	        var stage = this.refs.stage,
 	            stageW = stage.scrollWidth,
@@ -284,24 +299,28 @@
 	            halfImgW = Math.ceil(imgW / 2),
 	            halfImgH = Math.ceil(imgH / 2);
 
+	        //中心图片左右范围。
 	        this.Constant.centerPos = {
 	            left: halfStageW - halfImgW,
 	            top: halfStageH - halfImgH
 	        };
 
-	        this.Constant.hPosRange.leftSecX[0] = -halfImgW;
-	        this.Constant.hPosRange.leftSecX[1] = halfStageW - halfImgW * 3;
-	        this.Constant.hPosRange.rightSecX[0] = halfStageW + halfImgW;
-	        this.Constant.hPosRange.rightSecX[1] = stageW - halfImgW;
-	        this.Constant.hPosRange.y[0] = -halfImgH;
-	        this.Constant.hPosRange.y[1] = stageH - halfImgH;
-	        this.Constant.vPosRange.topY[0] = -halfImgH;
-	        this.Constant.vPosRange.topY[1] = halfStageH - halfImgH * 3;
-	        this.Constant.vPosRange.x[0] = halfStageW - imgW;
-	        this.Constant.vPosRange.x[1] = halfStageW;
+	        //左侧，右侧图片范围。
+	        this.Constant.xRange.leftX[0] = -halfImgW;
+	        this.Constant.xRange.leftX[1] = halfStageW - halfImgW * 3;
+	        this.Constant.xRange.rightX[0] = halfStageW + halfImgW;
+	        this.Constant.xRange.rightX[1] = stageW - halfImgW;
+	        this.Constant.xRange.y[0] = -halfImgH;
+	        this.Constant.xRange.y[1] = stageH - halfImgH;
 
+	        //上侧图片范围。
+	        this.Constant.yRange.topY[0] = -halfImgH;
+	        this.Constant.yRange.topY[1] = halfStageH - halfImgH * 3;
+	        this.Constant.yRange.x[0] = halfStageW - imgW;
+	        this.Constant.yRange.x[1] = halfStageW;
+
+	        //指定第一张居中。
 	        this.rearrange(0);
-	        console.log(this.state);
 	    },
 
 
@@ -20637,53 +20656,53 @@
 	module.exports = [
 		{
 			"fileName": "1.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "2.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "3.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "4.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "5.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "6.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "7.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "8.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "9.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		},
 		{
 			"fileName": "10.jpg",
-			"title": "233",
-			"desc": "oh my goooooooooooooooood haha!"
+			"title": "萌萌哒",
+			"desc": "love you~"
 		}
 	];
 
@@ -21076,61 +21095,61 @@
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "47c669dd9045b0a6367c2f7055465c11.jpg";
+	module.exports = __webpack_require__.p + "ec9b3a51d8ab1dbc800a11eb5a254f01.jpg";
 
 /***/ },
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "dd84d816097e7628d8c608877136d186.jpg";
+	module.exports = __webpack_require__.p + "54ef8c2f0c5289e3e9050e1de3d878da.jpg";
 
 /***/ },
 /* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "11410f33b61ad1ce4e8fc72632e37c6f.jpg";
+	module.exports = __webpack_require__.p + "1545baf10941a36fab543f1483a1865c.jpg";
 
 /***/ },
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "aa51f50fe7bfa1b03d1f0cc958f77462.jpg";
+	module.exports = __webpack_require__.p + "12e69445e9323dc457267ef0e26ef9ea.jpg";
 
 /***/ },
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "ff3debc5ee852cdc921c41d576c763c7.jpg";
+	module.exports = __webpack_require__.p + "bd6546e7239de6e53962052820957115.jpg";
 
 /***/ },
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "6e0c5d6b78a84d41bd0893c59e03dc45.jpg";
+	module.exports = __webpack_require__.p + "d3a13290a6a30509eeac4c82388040af.jpg";
 
 /***/ },
 /* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "0127d4e43df29ca4c1fff239faa312f8.jpg";
+	module.exports = __webpack_require__.p + "31a9f8b20ee4f5cd1a228f109366fd05.jpg";
 
 /***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "19e9cbb7d06e02d9255e65ce830a1140.jpg";
+	module.exports = __webpack_require__.p + "f6cca59bb01a5047b8c197a0103568b1.jpg";
 
 /***/ },
 /* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "e90cb8e049122a6a9445851dc9c702b5.jpg";
+	module.exports = __webpack_require__.p + "c8feb0fd1e9da8ec814c7f38806632da.jpg";
 
 /***/ },
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "72e3d2ce7760486563b7359450d09893.jpg";
+	module.exports = __webpack_require__.p + "1fac1f32274efd90602c578074a7accf.jpg";
 
 /***/ }
 /******/ ]);
