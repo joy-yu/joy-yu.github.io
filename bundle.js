@@ -131,6 +131,7 @@
 	        }
 	        if (this.props.arrange.rotate) {
 	            styleObj['transform'] = 'rotate(' + this.props.arrange.rotate + 'deg)';
+	            styleObj['webkitTransform'] = 'rotate(' + this.props.arrange.rotate + 'deg)';
 	        }
 
 	        if (this.props.arrange.isCenter) {
