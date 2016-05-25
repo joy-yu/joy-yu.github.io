@@ -331,17 +331,19 @@
 	        this.movePos.endX = e.changedTouches[0].pageX;
 	        this.movePos.rangeX = this.movePos.endX - this.movePos.startX;
 	        var nextIndex = 0;
-	        this.state.imgsArrangeArr.forEach(function (value, index, arr) {
+	        if (Math.abs(this.movePos.rangeX) > 100) {
+	            this.state.imgsArrangeArr.forEach(function (value, index, arr) {
 
-	            if (value.isCenter) {
-	                if (this.movePos.rangeX > 100) {
-	                    nextIndex = index === 0 ? arr.length - 1 : index - 1;
-	                } else if (this.movePos.rangeX < -100) {
-	                    nextIndex = index === arr.length - 1 ? 0 : index + 1;
+	                if (value.isCenter) {
+	                    if (this.movePos.rangeX > 100) {
+	                        nextIndex = index === arr.length - 1 ? 0 : index + 1;
+	                    } else if (this.movePos.rangeX < -100) {
+	                        nextIndex = index === 0 ? arr.length - 1 : index - 1;
+	                    }
 	                }
-	            }
-	        }.bind(this));
-	        this.rearrange(nextIndex);
+	            }.bind(this));
+	            this.rearrange(nextIndex);
+	        }
 	    },
 
 	    render: function render() {
