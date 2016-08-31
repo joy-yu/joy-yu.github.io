@@ -4,7 +4,7 @@
     var w, h;
     var bgImg = new Image();
     var starImg = new Image();
-    var starNum;
+    var starNum,superStarNum;
     var lastTime, diffTime;
 
 
@@ -29,6 +29,7 @@
         bgImg.src = 'img/bg.jpg';
         starImg.src = 'img/star.png';
         starNum = 100;
+        superStarNum = 8;
         lastTime = Date.now();
 
         for (var i = 0; i < starNum; i++) {
@@ -37,7 +38,7 @@
             stars[i].init();
         }
 
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < superStarNum; i++) {
             var obj = new superStar();
             superStars.push(obj);
             superStars[i].init();
@@ -96,9 +97,9 @@
     superStar.prototype.init = function() {
         this.x = getRandom(0, w);
         this.y = 0;
-        this.dx = -getRandom(30, 50);
-        this.dy = getRandom(30, 50);
-        this.speed = 0.1;
+        this.dx = -getRandom(80,150);
+        this.dy = getRandom(80,150);
+        this.speed = 0.07;
         this.vx = -this.dy * this.speed;
         this.vy = this.dy / this.dx * this.vx;
 
@@ -123,7 +124,7 @@
     };
 
     function drawSuperStars() {
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < superStarNum; i++) {
             superStars[i].draw();
         }
     }
