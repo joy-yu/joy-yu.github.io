@@ -1,0 +1,109 @@
+body,.container {
+        /*background: #e9dfc7;*/
+    font-family: '微软雅黑';
+    overflow-x: hidden;
+}
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+    overflow: hidden;
+    height: 0;
+}
+
+.night{
+    background: #32373b;
+    color: #737373;
+}
+.day{
+    background: #f7f7f7;
+}
+.container{
+    position: relative;
+    left: 0;
+    transition:left .8s;
+}
+
+.chapter-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1em;
+    overflow: auto;
+    padding-top: 3em;
+
+}
+.chapter-content .chapter-title {
+    text-align: center;
+}
+.chapter-content .chapter-title h1 {
+    font-size:  2em;
+    letter-spacing: 2px;
+}
+.chapter-content .cut-off {
+    display: block;
+    border-bottom: 1px solid #736357;
+    margin: 1em 0 0.5em 0;
+}
+
+
+
+.chapter-content .chapter-main p {
+    text-indent: 2em;
+    margin: 1em 0;
+    line-height: 1.8em;
+    text-align: justify;
+}
+
+
+
+.btn-bar {
+    text-align: center;
+    margin: 1em auto;
+    color: #fff;
+    opacity: .9;
+}
+.btn-bar .chapter-btn {
+    display: inline-block;
+    border-radius: 1em;
+    padding: 1em 1.5em;
+    margin: 0 1em;
+    text-align: center;
+    background: #000;
+    cursor: pointer;
+}
+
+
+
+.top-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: .5em 1em;
+    background: inherit;
+    transition:left .8s;
+}
+.top-bar .i-list {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATElEQVQ4T2NkoBAwUqifgVFISKiIgYmJjyyD/v37BDKgkIGJiZ9MAz5Q7gWybEbSRLkLqBGIlMTC8AhEEZFiBgYGXrKiE5oSh3ggAgATXRX7/vJJcAAAAABJRU5ErkJggg==);
+}
+
+.top-bar .left-nav{
+    position: fixed;
+    left: -100px; top: 0; bottom: 0;
+    width: 100px;
+    background: #2A2A29;
+    padding-top: 1em;
+    color: #818080;
+    transition:left .8s;
+}
+
+.top-bar .left-nav li{
+    border-bottom: 2px solid #343433;
+    padding: .5em 0 .5em 1em;
+    cursor: pointer;
+}

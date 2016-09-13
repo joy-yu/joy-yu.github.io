@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui">
+        <!--数字不解析为电话-->
+        <meta name="format-detection" content="telephone=no">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/style.css">
+        <style type="text/css">
+        
+        </style>
+    </head>
+    <body class="day">
+        
+        <div id="root" class="container day">
+
+
+            <div class="chapter-content">
+
+                <div class="chapter-title">
+                    <h1></h1>
+                    <span class="cut-off"></span>
+                    <h2></h2>
+                </div>
+
+                <div class="chapter-main">
+                </div>
+
+            </div>
+
+            <div class="btn-bar">
+                <span class="chapter-btn" id="next-btn">随机一篇</span>
+            </div>
+            
+            <div class="top-bar">
+                <i class="i-list" id="top-list"></i>
+                <div class="left-nav">
+                    <ul>
+                        <li id="l-today">今日文章</li>
+                        <li id="l-random">随机一篇</li>
+                        <li id="l-sight">夜间模式</li>
+                        <li>使用帮助</li>
+                        <li>重要的话</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        
+
+
+
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script>
+    $(function() {
+        var titleDom = $('.chapter-title h1');
+        var authorDom = $('.chapter-title h2');
+        var contentDom = $('.chapter-main');
+
+        function getArticle(url) {
+            return new Promise(function(resolve, reject) {
+                var aj = new XMLHttpRequest();
+                aj.open('get', url);
+                aj.onload = function() {
+                    resolve(JSON.parse(this.response));
+                };
+                aj.send();
+            });
+        }
+
+        function init(url, ck) {
+
+            getArticle(url)
+                .then(function(data) {
+                    titleDom.text(data.title);
+                    authorDom.text(data.author);
+                    contentDom.empty();
+                    $.each(data.main, function(i, el) {
+                        contentDom.append('<p>' + el + '</p>');
+                    });
+                })
+                .then(function() {
+                    if (ck === 'click') {
+                        $('#top-list').click();
+                    }
+                });
+        }
+        init('http://123.206.211.247:6789/');
+
+
+        $('#top-list').on('click', function(e) {
+            if ($('.left-nav').css('left') === '-100px') {
+                $('.top-bar').css({
+                    'left': '100px'
+                });
+                $('.left-nav').css({
+                    'left': '0'
+                });
+                $('.container').css({
+                    'left': '100px'
+                });
+            } else {
+                $('.top-bar').css({
+                    'left': '0'
+                });
+                $('.left-nav').css({
+                    'left': '-100px'
+                });
+                $('.container').css({
+                    'left': '0'
+                });
+            }
+
+        });
+
+
+        $('.left-nav li').on('click', function(e) {
+
+            if (e.target.id === 'l-random') {
+                init('http://123.206.211.247:6789/random', 'click');
+            }
+
+            if (e.target.id === 'l-today') {
+                init('http://123.206.211.247:6789', 'click');
+                $('#top-list').click();
+            }
+
+            if (e.target.id === 'l-sight') {
+              
+                $('body, .container').toggleClass('night day');
+                
+                if($(this).text()==='夜间模式'){
+                    $(this).text('日间模式');
+                } else{
+                    $(this).text('夜间模式');
+                }
+                $('#top-list').click();
+            }
+
+        });
+
+
+        $('#next-btn').on('click',function(e){
+            init('http://123.206.211.247:6789/random');
+            $('body').scrollTop(0);
+        });
+
+    }());
+
+    </script>
+
+    </body>
+</html>
