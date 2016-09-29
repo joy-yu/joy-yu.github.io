@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ywz</title>
+    <style>
+
+        *{
+            font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .ywz-wrapper{
+            position: relative;
+            width: 90px;
+        }
+        .ywz{
+            display: block;
+            text-align: center;
+            width: 90px;
+            height: 24px;
+            line-height: 22px;
+            border-radius: 4px;
+            color: #b8c0cc;
+            border: 1px solid #e5e9ef;
+            cursor: pointer;
+        }
+        .ywz:hover,.ywz.open{
+            color: #888;
+        }
+        .ywz.open{
+            border-bottom: 2px solid #fff;
+            border-radius: 0 5px 0px 0px;
+        }
+
+        .ywz-box{
+            width: 600px;
+            border: 1px solid #e5e9ef;
+            background: #fff;
+            padding: 10px;
+            position: absolute;
+            top:25px;
+            overflow: hidden;
+            z-index: -1;
+            display: none;
+        }
+        .ywz-box a{
+            display: block;
+            cursor: pointer;
+            padding: 3px 4px;
+            margin: 0 3px;
+            height: 20px;
+            line-height: 20px;
+            float: left;
+        }
+        .ywz-box.open{display: block;}
+    </style>
+</head>
+<body>
+    <textarea id="comment" cols="80" rows="5" style="resize:none;"></textarea>
+    <div class="ywz-wrapper">
+        <a class="ywz">(・ω・) 颜文字</a>
+        <div class="ywz-box">
+            <a>(⌒▽⌒)</a>
+            <a>（￣▽￣）</a>
+            <a>(=・ω・=)</a>
+            <a>(｀・ω・´)</a>
+            <a>(〜￣△￣)〜</a>
+            <a>(･∀･)</a>
+            <a>(°∀°)ﾉ</a>
+            <a>(￣3￣)</a>
+            <a>╮(￣▽￣)╭</a>
+            <a>( ´_ゝ｀)</a>
+            <a>←_←</a>
+            <a>→_→</a>
+            <a>(;¬_¬)</a>
+            <a>("▔□▔)/</a>
+            <a>(ﾟДﾟ≡ﾟдﾟ)!?</a>
+            <a>Σ(ﾟдﾟ;)</a>
+            <a>Σ( ￣□￣||)</a>
+            <a>(´；ω；`)</a>
+            <a>（/TДT)/</a>
+            <a>(^・ω・^ )</a>
+            <a>(｡･ω･｡)</a>
+            <a>(●￣(ｴ)￣●)</a>
+            <a>ε=ε=(ノ≧∇≦)ノ</a>
+            <a>(´･_･`)</a>
+            <a>(-_-#)</a>
+            <a>（￣へ￣）</a>
+            <a>(￣ε(#￣) Σ</a>
+            <a>ヽ(`Д´)ﾉ</a>
+            <a>(╯°口°)╯(┴—┴</a>
+            <a>（#-_-)┯━┯</a>
+            <a>_(:3」∠)_</a>
+        </div>
+        
+    </div>
+    <script>
+
+        (function (win, doc) {
+
+            var comment = doc.getElementById("comment"),
+                ywz = doc.querySelector(".ywz"),
+                ywzBox = doc.querySelector(".ywz-box");
+
+
+            function insertText(obj,str) {
+
+                //ie
+                if (document.selection) {
+                    obj.focus();
+                    document.selection.createRange().text = str;
+
+                } else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') { 
+                    var startPos = obj.selectionStart,
+                        endPos = obj.selectionEnd,
+                        cursorPos = startPos + str.length,
+                        tmpStr = obj.value;
+                    obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring( endPos, tmpStr.length);
+                    obj.selectionStart = obj.selectionEnd = cursorPos;
+                }
+            }
+
+            ywz.addEventListener("click", function() {
+                comment.focus();
+                if(ywzBox.className === "ywz-box"){
+                    ywz.classList.add("open");
+                    ywzBox.classList.add("open");
+                } else {
+                    ywz.classList.remove("open");
+                    ywzBox.classList.remove("open");
+                }
+            });
+
+            ywzBox.addEventListener("click", function(e) {
+                if (e.target.nodeName === 'A') {
+                    comment.focus();
+                    insertText(comment, e.target.textContent);
+                    ywz.classList.remove("open");
+                    ywzBox.classList.remove("open");
+                }
+            });
+
+            
+        }(window, document));
+    </script>
+</body>
+</html>

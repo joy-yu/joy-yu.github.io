@@ -1,0 +1,146 @@
+.fl{float:left;}
+.fr{float: right;}
+.b{font-weight: bold;}
+
+html,body{
+    height: 100%;
+    font-size: 13px;
+}
+
+#wrapper{
+    min-height: 600px;
+    height: 100%;           /* 底部相对于wrapper绝对定位配合min-height可固定为页面底部 */
+    position: relative;             
+}
+#wrapper,#header,#container,#footer{min-width: 800px;}
+
+
+#header{
+    width: 100%;
+    height: 50px;
+}
+#header .top_title{
+    margin: 20px 10px 0 0;
+}
+#header .top_title a,#header .top_title a:visited{
+    margin-left: 10px;
+    color: #000;
+}
+
+        /*  先hover再visited会失效......顺序:visited，hover，active */
+
+#header .top_title a:hover{
+    color: blue;
+}
+#header .top_title .top_more{
+    display: block;
+    float: right;
+    margin:-5px 0 0  20px;
+    padding:5px 5px 8px 5px;
+    background: #388fff;
+    color: #fff;
+}
+
+
+#header .show_top_more{
+    display: none;
+    position: absolute;
+    right: 0;
+    top:0;
+    background: #eee;
+    color: #000;
+    width: 85px;
+    height: 100%;
+    z-index: 100;
+    text-align: center;
+}
+#header .show_top_more li{
+    padding: 10px 0;
+}
+#header .show_top_more li:first-child{
+    padding-top:20px;
+}
+#header .show_top_more li a{
+    color: #000;
+    text-decoration: none;
+}
+#header .show_top_more li a:hover{
+    text-decoration: underline;
+}
+
+
+
+#container{
+    position: relative;
+    top:14%;
+}
+#container .logo{
+    width: 300px;
+    margin: 0 auto;
+}
+#container .logo_img{
+    width:290px;
+    height: 130px;
+}
+#container .sh_form{
+    font-size: 0;
+    width: 631px;
+    margin: 15px auto;
+}
+#container .sh_form .search_box{
+    width: 525px;
+    height: 36px;
+    padding:0 0 0 5px;       /* 写padding-left有bug，貌似表单有默认padding？ */
+    outline: none;
+    vertical-align:top;        /*  解决不对齐bug */
+    border:1px solid #bbb;
+}
+#container .sh_form .search_box:hover{
+    border:1px solid #999;
+}
+#container .sh_form .search_box:focus{
+    border:1px solid #3185ff;
+}
+#container .sh_form .search_btn{
+    font-size: 15px;
+    width: 100px;
+    margin-left: -1px;
+    height: 38px;
+    padding:0;
+    background: #3185ff;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    vertical-align:top;
+}
+#container .sh_form .search_btn:hover{
+    background: #3178ff;
+}
+#container .sh_form .search_btn:active{
+    background: #3165ff;
+}
+
+
+
+#footer{
+    position: absolute;
+    bottom: 60px;
+    text-align: center;
+    width: 100%;
+}
+#footer .bom_title{
+    margin-bottom:10px;
+}
+#footer .bom_title a{
+    margin-left:10px;
+}
+#footer .bom_title a:visited{
+    color: blue;
+}
+#footer .bom_title a:active{
+    color: orange;
+}
+#footer .copy_right,#footer .copy_right a:visited{
+    color: #666;
+}

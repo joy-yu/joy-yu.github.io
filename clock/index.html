@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>clock</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: #ccc;
+        }
+        ul,ol{
+            list-style: none;
+        }
+        .wrapper{
+            text-align: center;
+        }
+        .clock{
+            width: 200px;
+            height: 200px;
+            border-radius: 100%;
+            background: #000;
+            position: relative;
+            margin: 50px auto;
+        }
+        .line-hour li,
+        .line-min li,
+        .pointer li,
+        .number li{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background: #fff;
+            transform: translate(0,-50%);
+            transform-origin: left;
+        }
+        .pointer .hour{
+            width: 45px;
+            height: 3px;
+        }
+        .pointer .min{
+            width: 60px;
+            height: 2px;
+        }
+        .pointer .sec{
+            width: 80px;
+            height: 1px;
+        }
+        .pointer .circle{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+
+        .line-hour li{
+            width: 10px;
+            height: 2px;
+            z-index:20;
+            background-color: red;
+
+        }
+        .line-min li{
+            width: 5px;
+            height: 2px;
+            z-index:21;
+            background-color: #66ccff;
+        }
+        .number li{
+            background: transparent;
+            color: #fff;
+        }
+        .number{
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            margin: 5px 0 0 -1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>time</h1>
+        <div class="clock">
+            <ul class="line-min"></ul>
+            <ul class="line-hour"></ul>
+            <ol class="number"></ol>
+
+            <ul class="pointer">
+                <li class="hour"></li>
+                <li class="min"></li>
+                <li class="sec"></li>
+                <li class="circle"></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+    <script>
+        $(function(){
+
+            var init = (function(){
+                drawLines($('.line-min'), 60, 85);
+                drawLines($('.line-hour'), 12, 80);
+                drawNumbers($('.number'));
+                move();
+            }());
+        });
+
+        function drawLines(el, count, transX){
+            var deg = 360 / count;
+            for(var i=0; i<count; i++){
+                el.append('<li style="transform:rotate('+i*deg + 'deg) translate('+transX+'px,-50%)"></li>');
+            }
+        }
+
+        function drawNumbers(el){
+            var radius = el.width() / 2.1;
+
+            for(var i=1; i<=12; i++){
+                var myAngle = (i-3)/6 * Math.PI;
+
+                var myX = radius + radius*Math.cos(myAngle), // x=r+rcos(θ)
+                    myY = radius + radius*Math.sin(myAngle); // y=r+rsin(θ)
+
+                el.append('<li style="left:' + myX + 'px; top:'+ myY +'px">' + i + '</li>');
+            }
+        }
+
+        function move(){
+            setInterval(function(){
+                var now = new Date(),
+                    hour = now.getHours(),
+                    min = now.getMinutes(),
+                    sec = now.getSeconds();
+
+                var secAngle = sec*6-90,
+                    minAngle = min*6+sec*0.1-90,
+                    hourAngle = hour*30+min*0.5-90;
+
+                $(".sec").css('transform', 'rotate('+secAngle+'deg)');
+                $(".min").css('transform', 'rotate('+minAngle+'deg)');
+                $(".hour").css('transform', 'rotate('+hourAngle+'deg)');
+            },1000);
+        }
+
+    </script>
+</body>
+</html>
