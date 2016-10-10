@@ -38,6 +38,7 @@ body,.container {
 .chapter-content .chapter-title h1 {
     font-size:  2em;
     letter-spacing: 2px;
+    line-height: 1.2em;
 }
 .chapter-content .cut-off {
     display: block;
