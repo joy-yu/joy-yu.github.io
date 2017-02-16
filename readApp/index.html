@@ -57,6 +57,8 @@
         var titleDom = $('.chapter-title h1');
         var authorDom = $('.chapter-title h2');
         var contentDom = $('.chapter-main');
+        var constUrl = 'http://118.89.142.46:6789/';
+        var constRandomUrl = 'http://118.89.142.46:6789/random';
 
         function getArticle(url) {
             return new Promise(function(resolve, reject) {
@@ -86,7 +88,7 @@
                     }
                 });
         }
-        init('http://123.206.211.247:6789/');
+        init(constUrl);
 
 
         $('#top-list').on('click', function(e) {
@@ -118,11 +120,11 @@
         $('.left-nav li').on('click', function(e) {
 
             if (e.target.id === 'l-random') {
-                init('http://123.206.211.247:6789/random', 'click');
+                init(constRandomUrl, 'click');
             }
 
             if (e.target.id === 'l-today') {
-                init('http://123.206.211.247:6789', 'click');
+                init(constUrl, 'click');
                 $('#top-list').click();
             }
 
@@ -142,7 +144,7 @@
 
 
         $('#next-btn').on('click',function(e){
-            init('http://123.206.211.247:6789/random');
+            init(constRandomUrl);
             $('body').scrollTop(0);
         });
 
