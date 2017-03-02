@@ -2,19 +2,50 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>joy钰的github</title>
+        <title>Lab</title>
+        <style>
+          *{margin: 0;padding: 0;}
+          html,body{text-align: center;}
+          ul{
+            list-style: none;
+            
+            padding: 0 calc(50% - 300px);
+            margin: 0 auto;
+          }
+          li{
+            line-height: 1.5em;
+            float: left;
+            border: 2px solid #d5d5d5;
+            border-top-color: #6cf;
+            border-radius: 5px;
+            padding: 1em;
+            margin: 1em;
+            cursor: pointer;
+          }
+          li:hover{
+            background: #eee;
+          }
+          a{
+            text-decoration: none;
+            color: #5f5f5f;
+          }
+          .clearfix:after{overflow:hidden;display: block;content: '';height: 0;clear: both;}
+          @media screen and (max-width:450px) {
+            li{float: none;}
+          }
+        </style>
     </head>
     <body>
         
-        <h1>joy-yu</h1>
-        <ul>
-            <li><a href='gallery'>react gallery</a></li>
+        <h1 class="title">Little Lab</h1>
+        <ul class="clearfix">
+            <li><a href="gallery">react gallery</a></li>
             <li><a href="rc-rate">react exchange rate</a></li>
             <li><a href="rc-fm">react fm</a></li>
             <li><a href="rc-translation">react translation</a></li>
             <li><a href="readApp">mobile readApp</a></li>
-            <li><a href='zZ'>canvas zZ</a></li>
-            <li><a href='lazyLoad'>lazyLoad</a></li>
+            <li><a href="zZ">canvas zZ</a></li>
+            <li><a href="lazyLoad">lazyLoad</a></li>
             <li><a href="clock">CSS3 Clock</a></li>
             <li><a href="ywz">textarea颜文字插入</a></li>
             <li><a href="baidu">Baidu index</a></li>
