@@ -1,0 +1,292 @@
+*{
+  margin: 0;padding: 0;
+  font-family: 'Microsoft YaHei';
+  box-sizing: border-box;
+
+}
+html,body{
+  color: #fff;
+  font-size: 12px;
+  height: 100%;
+  min-height: 100%;
+  min-width: 1080px;
+}
+a{
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+ul{list-style: none;}
+h1{
+  text-align: center;
+  font-size: 4rem;
+  font-weight: normal;
+  letter-spacing: .25rem;
+}
+img{
+  max-width: 100%;
+  outline: 0;
+  border: 0;
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.container{
+  width: 1080px;
+  margin: 0 auto;
+}
+.container:after,.clearfix:after{
+overflow: hidden;
+display: block;
+content: '';
+clear: both;
+height: 0;
+}
+
+
+/*首页*/
+#page-banner{
+  background: #9c58b6;
+  height: 100%;
+}
+.banner-title{
+  width: 100%;
+  position: absolute;
+  top: 0%;
+  transition: .8s;
+}
+.fadeDown{
+  top: 40%;
+}
+/*首页*/
+
+
+/*导航*/
+#page-nav{
+  min-width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background: #42474b;
+  position: absolute;
+  bottom: 0;
+  opacity: 0.95;
+}
+#page-nav a{
+  display: block;
+  padding: 0 1rem;
+}
+#page-nav a:hover{
+  background: #666;
+}
+.nav-box a{
+  float: left;
+}
+/*导航*/
+
+
+/*自我介绍页*/
+#page-intro{
+  background: #1889c5;
+  padding: 5rem 0;
+  font-size: 1.5rem;
+  line-height: 1.75;
+  text-align: center;
+}
+
+.intro-icon a{
+  display: inline-block;
+  margin: 0 3rem;
+}
+.intro-icon img:hover{
+  transform: rotate(360deg);
+  transition: .6s transform; 
+}
+
+.intro-text{
+  margin-top: 4rem;
+}
+
+
+.intro-bottom{
+  text-align: left;
+  margin-top: 5rem;
+}
+.intro-left span{
+  display: inline-block;
+  width: 10rem;
+  text-align: right;
+  font-weight: bold;
+}
+.intro-left a:hover{
+  text-decoration: underline;
+}
+.intro-right{
+  width: 600px;
+}
+/*自我介绍页*/
+
+
+/* 技能点 */
+#page-skill{
+  background: #22b571;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 5rem 0;
+}
+#page-skill h1{
+  padding-bottom: 6rem;
+}
+#page-skill ul{
+  float: left;
+  width: 215px;
+  border: 2px solid #fff;
+  margin-right: 4rem;
+}
+#page-skill li:first-child{
+  font-weight: bold;
+  background: #fff;
+  color: #000;
+}
+#page-skill li{
+  padding: .5rem 0;
+}
+#page-skill li:hover{
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+}
+/* 技能点 */
+
+
+/*fe研究*/
+#page-fe {
+  background: #bdb76a;
+  padding: 5rem 0;
+  text-align: center;
+}
+#page-fe h1{
+  padding-bottom: 6rem;
+}
+#page-fe li {
+  float: left;
+  border: 2px solid #ddd;
+  border-top-color: #6cf;
+  border-radius: 5px;
+  margin: 1rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  background: #fff;
+}
+#page-fe li:hover {
+  background: #ddd;
+}
+#page-fe a{
+  color: #000;
+  display: block;
+  padding: 1em;
+}
+/*fe研究*/
+
+/*图片库*/
+#page-pic{
+  background: #aaa;
+  padding: 5rem 0;
+  text-align: center;
+}
+#page-pic h1{
+  padding-bottom: 6rem;
+}
+.img-figure {
+  width: 200px;
+  height: 340px;
+  float: left;
+  padding: 10px;
+  margin: 10px 10px 0 0;
+  color: #000;
+  text-align: center;
+  background-color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 5px #000;
+}
+.img-figure img{
+  max-width: 100%;
+  width: 100%;
+  height: 90%;
+}
+/*图片库*/
+
+
+@media screen and (max-width: 960px) {
+  html,body{
+    width: 100%;
+    min-width: 960px;
+  }
+  .container{
+    width: 960px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  html,body{
+    width: 100%;
+    min-width: 0;
+    font-size: 10px;
+  }
+  .container{
+    width: 100%;
+  }
+  #page-nav a{
+    padding: 0 .5rem;
+  }
+  #page-intro{
+    padding: 2rem;
+    overflow: auto;
+  }
+  .intro-icon a:nth-child(3){
+    display: block;
+  }
+  .intro-right,.intro-left{
+    width: auto;
+    float: none;
+    margin: 5rem auto;
+  }
+  .intro-left{
+    text-align: center;
+  }
+  .intro-left span{
+    width: auto;
+  }
+  .intro-right{
+    margin-left: 3rem;
+  }
+  #page-skill{
+    padding: 2rem;
+  }
+  #page-skill ul{
+    width: 100%;
+    float: none;
+    margin: 1rem auto;
+  }
+
+  #page-fe{
+    padding: 2rem;
+  }
+
+  #page-fe li{
+    float: none;
+    text-align: center;
+  }
+
+  #page-pic{
+    padding: 2rem;
+  }
+
+  .img-figure {
+    width: 48%;
+    height: 240px;
+    margin: 1%;
+  }
+}
