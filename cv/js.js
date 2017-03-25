@@ -1,5 +1,10 @@
 window.onload = function() {
-
+  /*
+  function $$(elm){
+    if(typeof elm !== 'string') console.warn('请使用正确的css选择器调用此方法...');
+    return document.querySelector(elm);
+  }
+  */
   var bannerTitle = document.querySelector('.banner-title');
   var pageNav = document.getElementById('page-nav');
   var pageBanner = document.getElementById('page-banner');
@@ -12,8 +17,9 @@ window.onload = function() {
   var navSkill = document.getElementById('nav-skill');
   var navFe = document.getElementById('nav-fe');
   var navPic = document.getElementById('nav-pic');
+  var loading = document.querySelector('.loading');
 
-  var pageNavHeight = pageNav.scrollHeight;
+
 
   var numPerLoad = 10;
   var totalPic = 0;
@@ -27,6 +33,7 @@ window.onload = function() {
     var imgAddress = 'http://omliy554c.bkt.clouddn.com/';
     var imgFrame = document.createDocumentFragment();
     for (var i = total, len = total + num; i < len; i++) {
+      if(!data[i]){loading.textContent = loading.getAttribute('data-loaded');break;} 
       var imgFigure = document.createElement('figure');
       imgFigure.className = 'img-figure';
       imgFigure.innerHTML = '<img src="' + imgAddress + data[i] + '"alt="消失的图片"/><figcaption>' + data[i] + '</figcaption>';
@@ -35,58 +42,42 @@ window.onload = function() {
     totalPic = total + num;
     picBox.appendChild(imgFrame);
   }
-  gImg(imgData, numPerLoad, totalPic);
 
-
-  /*
-  var diffTimer = null;
-  navSkill.addEventListener('click', function(e) {
-    clearInterval(diffTimer);
-    var diffSkill = getDiffY(pageSkill);
-    var scrollSpeed = diffSkill / 10;
-
-    diffTimer = setInterval(function() {
-      console.log(document.body.scrollTop, diffSkill);
-      if (diffSkill > 0) {
-        document.body.scrollTop += scrollSpeed;
-        diffSkill = Math.round(diffSkill - scrollSpeed);
-        if (diffSkill < 0) {
-          clearInterval(diffTimer);
-        }
-      } else if (diffSkill < 0) {
-        document.body.scrollTop += scrollSpeed;
-        diffSkill = Math.round(diffSkill - scrollSpeed);
-        if (diffSkill > 0) {
-          clearInterval(diffTimer);
-        }
-      } else {
-        clearInterval(diffTimer);
-      }
-    }, 17);
-  });
-  */
-
-  window.addEventListener('scroll', function(e) {
+  function makeFixedBottom(elm) {
     var totalH = document.body.scrollHeight || document.documentElement.scrollHeight;
     var clientH = window.innerHeight || document.documentElement.clientHeight;
     var scrollH = document.body.scrollTop || document.documentElement.scrollTop;
     var diffY = totalH - clientH - scrollH;
+    var elmHeight = elm.offsetHeight;
 
-
-    if (scrollH > clientH - pageNavHeight) {
+    if (scrollH > clientH - elmHeight) {
       pageNav.style.position = 'fixed';
       pageNav.style.top = 0;
     } else {
       pageNav.style.position = '';
       pageNav.style.top = '';
     }
+  }
+
+
+
+  window.addEventListener('scroll', function(e) {
+    var totalH = document.body.scrollHeight || document.documentElement.scrollHeight;
+    var clientH = window.innerHeight || document.documentElement.clientHeight;
+    var scrollH = document.body.scrollTop || document.documentElement.scrollTop;
+    var diffY = totalH - clientH - scrollH;
+    makeFixedBottom(pageNav);
 
     if (diffY < 20) {
+      if(totalPic > imgData.length) {return;}
       setTimeout(gImg.bind(null, imgData, numPerLoad, totalPic), 500);
     }
   });
 
-  setTimeout(function(){
-    bannerTitle.className +=' fadeDown';
-  },300)
+  function init(){
+    makeFixedBottom(pageNav);
+    gImg(imgData, numPerLoad, totalPic);
+  }
+  init();
+
 }
